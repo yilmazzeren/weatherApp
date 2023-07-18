@@ -4,14 +4,13 @@ import {
   Text,
   StyleSheet,
   ImageBackground,
-  StatusBar,
   View
 } from 'react-native'
-
-import { Feather } from '@expo/vector-icons'
+import moment from 'moment'
 import IconText from '../components/IconText'
 
-const City = () => {
+const City = ({ weatherData }) => {
+  const { name, country, population, sunrise, sunset } = weatherData
   const {
     container,
     cityName,
@@ -30,13 +29,13 @@ const City = () => {
         source={require('../../assets/city-background.jpg')}
         style={imageLayout}
       >
-        <Text style={[cityText, cityName]}>London</Text>
-        <Text style={[cityText, countryName]}>UK</Text>
+        <Text style={[cityName, cityText]}>{name}</Text>
+        <Text style={[countryName, cityText]}>{country}</Text>
         <View style={[populationWrapper, rowLayout]}>
           <IconText
             iconName={'user'}
             iconColor={'red'}
-            bodyText={'8000'}
+            bodyText={`Population: ${population}`}
             bodyTextStyles={populationText}
           />
         </View>
@@ -44,13 +43,13 @@ const City = () => {
           <IconText
             iconName={'sunrise'}
             iconColor={'white'}
-            bodyText={'10:46:58am'}
+            bodyText={moment(sunrise).format('h:mm:ss a')}
             bodyTextStyles={riseSetText}
           />
           <IconText
             iconName={'sunset'}
             iconColor={'white'}
-            bodyText={'17:28:15pm'}
+            bodyText={moment(sunset).format('h:mm:ss a')}
             bodyTextStyles={riseSetText}
           />
         </View>
@@ -61,8 +60,7 @@ const City = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginTop: StatusBar.currentHeight
+    flex: 1
   },
   imageLayout: {
     flex: 1
@@ -76,8 +74,8 @@ const styles = StyleSheet.create({
   cityText: {
     justifyContent: 'center',
     alignSelf: 'center',
-    fontWeight: 'bold',
-    color: 'white'
+    color: 'white',
+    fontWeight: 'bold'
   },
   populationWrapper: {
     justifyContent: 'center',
@@ -92,13 +90,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     marginTop: 30
   },
-  riseSetText: {
-    fontSize: 20,
-    color: 'white'
-  },
   rowLayout: {
     flexDirection: 'row',
     alignItems: 'center'
+  },
+  riseSetText: {
+    fontSize: 20,
+    color: 'white'
   }
 })
+
 export default City
